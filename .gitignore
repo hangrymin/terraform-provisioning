@@ -1,2 +1,16 @@
-**/.terraform/*
+# Terraform
+*.tfstate
+*.tfstate.*
+.crash
+crash.log
+.terraform/
+# (잠그기 파일은 보통 유지하지만 원치 않으면 해제)
+#! .terraform.lock.hcl
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+terraform.rc
+.terraformrc
+EOF
 
