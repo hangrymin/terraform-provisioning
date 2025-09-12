@@ -1,0 +1,388 @@
+version: 3
+automerge: true
+projects:
+  - name: ecr/etevers-id/ap-northeast-2
+    dir: terraform/ecr/etevers-id/ap-northeast-2
+    workspace: default
+    terraform_version: 1.3.7
+    autoplan:
+      when_modified: [
+         "*.tf"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id
+
+  - name: vpc/tmcd_apnortheast2
+    dir: terraform/vpc/tmcd_apnortheast2
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "*.tfvars"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id
+
+  - name: vpc/testd_apnortheast2
+    dir: terraform/vpc/testd_apnortheast2
+    workspace: default
+    terraform_version: 1.5.7
+    autoplan:
+      when_modified: [
+         "*.tf",
+          "*.tfvars"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id
+
+  - name: iam/zerone-id
+    dir: terraform/iam/zerone-id
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id    
+
+  - name: kms/zerone-id/ap-northeast-2
+    dir: terraform/kms/zerone-id/ap-northeast-2
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id  
+    
+  - name: ssm/zerone-id/ap-northeast-2
+    dir: terraform/ssm/zerone-id/ap-northeast-2
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "secrets.sops.yaml"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id
+
+  - name: ecr/zerone-id/ap-northeast-2
+    dir: terraform/ecr/zerone-id/ap-northeast-2
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id   
+
+  - name: securitygroup/zerone-id/tmcd_apnortheast2
+    dir: terraform/securitygroup/zerone-id/tmcd_apnortheast2
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "terraform.tfvars"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id       
+
+  - name: codebuild/zerone-id/tmcd_apnortheast2
+    dir: terraform/codebuild/zerone-id/tmcd_apnortheast2
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "terraform.tfvars",
+         "secrets.sops.yaml"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id     
+
+  - name: acm/zerone-id/ap-northeast-2
+    dir: terraform/acm/zerone-id/ap-northeast-2
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "terraform.tfvars",
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id
+
+  - name: platform/jenkins/tmcd_apnortheast2
+    dir: terraform/platform/jenkins/tmcd_apnortheast2
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "terraform.tfvars",
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id  
+
+  - name: secretsmanager/zerone-id/ap-northeast-2
+    dir: terraform/secretsmanager/zerone-id/ap-northeast-2
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "terraform.tfvars",
+         "*.sops.yaml"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id    
+
+  - name: ecs/demo/tmcd_apnortheast2
+    dir: terraform/ecs/demo/tmcd_apnortheast2
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "terraform.tfvars",
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id      
+
+  - name: codedeploy/zerone-id/ap-northeast-2
+    dir: terraform/codedeploy/zerone-id/ap-northeast-2
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "terraform.tfvars",
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id
+
+  - name: s3/zerone-id
+    dir: terraform/s3/zerone-id
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "terraform.tfvars",
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id  
+
+  - name: services/demoapp/tmcd_apnortheast2
+    dir: terraform/services/demoapp/tmcd_apnortheast2
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "terraform.tfvars",
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id
+    
+  - name: eks/tmcd_apnortheast2/tmcdapne2-nhwy
+    dir: terraform/eks/tmcd_apnortheast2/tmcdapne2-nhwy
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "terraform.tfvars",
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: id  
+### github
+  - name: github/springboot-sample
+    dir: github/springboot-sample
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "*.yaml"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: github  
+
+  - name: github/terraform-provisioning
+    dir: github/terraform-provisioning
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+         "*.yaml"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: github  
+
+### datadog
+  - name: datadog/integration
+    dir: datadog/integration
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: datadog  
+
+  - name: datadog/monitor
+    dir: datadog/monitor
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: datadog
+
+  - name: datadog/dashboard
+    dir: datadog/dashboard
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: datadog   
+### sumologic
+  - name: sumologic/collector
+    dir: sumologic/collector
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: sumologic  
+
+  - name: sumologic/partition
+    dir: sumologic/partition
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf"
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: sumologic
+
+  - name: sumologic/sources/vpcflow
+    dir: sumologic/sources/vpcflow
+    workspace: default
+    terraform_version: 1.7.0
+    autoplan:
+      when_modified: [
+         "*.tf",
+      ]
+      enabled: true
+    apply_requirements: []
+    workflow: sumologic
+
+#### Workflows #####
+workflows:
+  # id
+  id:
+    plan:
+      steps:
+        - init:
+            extra_args: [
+              '-backend-config="role_arn=arn:aws:iam::066346343248:role/atlantis-zerone-id-admin"',
+              '-upgrade=false'
+            ]
+        - plan:
+            extra_args: [
+              "-var 'assume_role_arn=arn:aws:iam::066346343248:role/atlantis-zerone-id-admin'"
+            ]
+    apply:
+      steps:
+        - apply
+
+  # github
+  github:
+    plan:
+      steps:
+        - init:
+            extra_args: [
+              '-backend-config="role_arn=arn:aws:iam::066346343248:role/atlantis-zerone-id-admin"',
+              '-upgrade=false'
+            ]
+        - plan:
+            extra_args: [
+              "-var 'assume_role_arn=arn:aws:iam::066346343248:role/atlantis-zerone-id-admin'"
+            ]
+    apply:
+      steps:
+        - apply
+  # datadog
+  datadog:
+    plan:
+      steps:
+        - init:
+            extra_args: [
+              '-backend-config="role_arn=arn:aws:iam::066346343248:role/atlantis-zerone-id-admin"',
+              '-upgrade=false'
+            ]
+        - plan:
+            extra_args: [
+              "-var 'assume_role_arn=arn:aws:iam::066346343248:role/atlantis-zerone-id-admin'"
+            ]
+    apply:
+      steps:
+        - apply
+
+  sumologic:
+    plan:
+      steps:
+        - init:
+            extra_args: [
+              '-backend-config="role_arn=arn:aws:iam::066346343248:role/atlantis-zerone-id-admin"',
+              '-upgrade=false'
+            ]
+        - plan:
+            extra_args: [
+              "-var 'assume_role_arn=arn:aws:iam::066346343248:role/atlantis-zerone-id-admin'"
+            ]
+    apply:
+      steps:
+        - apply
