@@ -1,14 +1,14 @@
-resource "aws_ecr_repository" "demo" {
-  name = "demo"
+resource "aws_ecr_repository" "demo_repo" {
+  name = "demo-repo"
   image_scanning_configuration {
     scan_on_push = true
   }
   image_tag_mutability = "IMMUTABLE"
 }
-resource "aws_ecr_repository_policy" "demo" {
-  repository = aws_ecr_repository.demo.name
+resource "aws_ecr_repository_policy" "demo_repo" {
+  repository = aws_ecr_repository.demo_repo.name
   policy = jsonencode({
-    "Version" : "2008-10-17",
+    "Version" : "2012-10-17",
     "Statement" : [
       {
         "Effect" : "Allow",
