@@ -26,24 +26,24 @@ variable "remote_state" {
   default = {
     vpc = {
       tmcd_apnortheast2 = {
-        bucket = "zerone-id-apnortheast2-tfstate"
+        bucket = "etevers-id-apnortheast2-tfstate"
         key    = "provisioning/terraform/vpc/tmcd_apnortheast2/terraform.tfstate"
         region = "ap-northeast-2"
       }
     }
     iam = {
-      zerone-id = {
-        bucket = "zerone-id-apnortheast2-tfstate"
-        key    = "provisioning/terraform/iam/zerone-id/terraform.tfstate"
+      etevers-id = {
+        bucket = "etevers-id-apnortheast2-tfstate"
+        key    = "provisioning/terraform/iam/etevers-id/terraform.tfstate"
         region = "ap-northeast-2"
       }
     }
 
     kms = {
-      zerone-id = {
+      etevers-id = {
         apne2 = {
-          bucket = "zerone-id-apnortheast2-tfstate"
-          key    = "provisioning/terraform/kms/zerone-id/ap-northeast-2/terraform.tfstate"
+          bucket = "etevers-id-apnortheast2-tfstate"
+          key    = "provisioning/terraform/kms/etevers-id/ap-northeast-2/terraform.tfstate"
           region = "ap-northeast-2"
         }
       }
@@ -52,14 +52,14 @@ variable "remote_state" {
     ecs = {
       nginx = {
         tmcdapne2 = {
-          bucket = "zerone-id-apnortheast2-tfstate"
+          bucket = "etevers-id-apnortheast2-tfstate"
           key    = "provisioning/terraform/ecs/nginx/tmcd_apnortheast2/terraform.tfstate"
           region = "ap-northeast-2"
         }
       }
       demo = {
         tmcdapne2 = {
-          bucket = "zerone-id-apnortheast2-tfstate"
+          bucket = "etevers-id-apnortheast2-tfstate"
           key    = "provisioning/terraform/ecs/demo/tmcd_apnortheast2/terraform.tfstate"
           region = "ap-northeast-2"
         }
@@ -67,19 +67,19 @@ variable "remote_state" {
     }
 
     security_group = {
-      zerone-id = {
+      etevers-id = {
         tmcdapne2 = {
-          bucket = "zerone-id-apnortheast2-tfstate"
-          key    = "provisioning/terraform/securitygroup/zerone-id/tmcd_apnortheast2/terraform.tfstate"
+          bucket = "etevers-id-apnortheast2-tfstate"
+          key    = "provisioning/terraform/securitygroup/etevers-id/tmcd_apnortheast2/terraform.tfstate"
           region = "ap-northeast-2"
         }
       }
     }
 
     codedeploy = {
-      zerone-id = {
+      etevers-id = {
         apne2 = {
-          bucket = "zerone-id-apnortheast2-tfstate"
+          bucket = "etevers-id-apnortheast2-tfstate"
           key    = "provisioning/terraform/codedeploy/ap-northeast-2/terraform.tfstate"
           region = "ap-northeast-2"
         }
@@ -87,10 +87,10 @@ variable "remote_state" {
     }
 
     secretsmanager = {
-      zerone-id = {
+      etevers-id = {
         apne2 = {
-          bucket = "zerone-id-apnortheast2-tfstate"
-          key    = "provisioning/terraform/secretsmanager/zerone-id/ap-northeast-2/terraform.tfstate"
+          bucket = "etevers-id-apnortheast2-tfstate"
+          key    = "provisioning/terraform/secretsmanager/etevers-id/ap-northeast-2/terraform.tfstate"
           region = "ap-northeast-2"
         }
       }
@@ -98,16 +98,16 @@ variable "remote_state" {
 
     eks = {
       tmcdapne2-nhwy = {
-        bucket = "zerone-id-apnortheast2-tfstate"
+        bucket = "etevers-id-apnortheast2-tfstate"
         key    = "provisioning/terraform/eks/tmcd_apnortheast2/tmcdapne2-nhwy/terraform.tfstate"
         region = "ap-northeast-2"
       }
     }
 
     s3 = {
-      zerone-id = {
-        bucket = "zerone-id-apnortheast2-tfstate"
-        key    = "provisioning/terraform/s3/zerone-id/terraform.tfstate"
+      etevers-id = {
+        bucket = "etevers-id-apnortheast2-tfstate"
+        key    = "provisioning/terraform/s3/etevers-id/terraform.tfstate"
         region = "ap-northeast-2"
       }
     }
