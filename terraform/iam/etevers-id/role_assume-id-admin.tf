@@ -16,7 +16,12 @@ data "aws_iam_policy_document" "assume_id_admin_assume_role" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${var.account_id.id}:root",
+        # "arn:aws:iam::${var.account_id.id}:root", # 원본
+        # 소스(Assumer) 계정: 661077619249 전체 신뢰 (수정)
+        "arn:aws:iam::661077619249:root",
+
+        # (유지) 타깃(자기) 계정: 763940551622도 신뢰 유지 (수정)
+        "arn:aws:iam::763940551622:root",
       ]
     }
   }
