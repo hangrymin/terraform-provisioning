@@ -8,14 +8,10 @@ data "aws_iam_policy_document" "codebuild_deployment_assume_role_document" {
   statement {
     effect = "Allow"
     principals {
-      identifiers = [
-        "codebuild.amazonaws.com"
-      ]
-      type = "Service"
+      identifiers = ["codebuild.amazonaws.com"]
+      type        = "Service"
     }
-    actions = [
-      "sts:AssumeRole"
-    ]
+    actions = ["sts:AssumeRole"]
   }
 }
 
@@ -27,11 +23,9 @@ resource "aws_iam_role_policy" "codebuild_deployment_operation" {
 
 data "aws_iam_policy_document" "codebuild_deployment_operation_document" {
   statement {
-    sid    = "SSMSendCommand"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
+    sid      = "SSMSendCommand"
+    effect   = "Allow"
+    resources = ["*"]
     actions = [
       "ssm:SendCommand",
       "ssm:ListCommandInvocations"
@@ -39,11 +33,9 @@ data "aws_iam_policy_document" "codebuild_deployment_operation_document" {
   }
 
   statement {
-    sid    = "CloudwatchAccess"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
+    sid      = "CloudwatchAccess"
+    effect   = "Allow"
+    resources = ["*"]
     actions = [
       "cloudwatch:PutMetricAlarm",
       "cloudwatch:Get*"
@@ -51,11 +43,9 @@ data "aws_iam_policy_document" "codebuild_deployment_operation_document" {
   }
 
   statement {
-    sid    = "DeploymentELBAccess"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
+    sid      = "DeploymentELBAccess"
+    effect   = "Allow"
+    resources = ["*"]
     actions = [
       "elasticloadbalancing:DescribeLoadBalancerAttributes",
       "elasticloadbalancing:DescribeLoadBalancers",
@@ -70,32 +60,22 @@ data "aws_iam_policy_document" "codebuild_deployment_operation_document" {
   }
 
   statement {
-    sid    = "DeploymentIAMAccess"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
-    actions = [
-      "iam:PassRole"
-    ]
+    sid      = "DeploymentIAMAccess"
+    effect   = "Allow"
+    resources = ["*"]
+    actions   = ["iam:PassRole"]
   }
 
   statement {
-    effect = "Allow"
-    resources = [
-      "arn:aws:ec2:ap-northeast-2:${var.account_id.id}:network-interface/*"
-    ]
-    actions = [
-      "ec2:CreateNetworkInterfacePermission"
-    ]
+    effect    = "Allow"
+    resources = ["arn:aws:ec2:ap-northeast-2:${var.account_id.id}:network-interface/*"]
+    actions   = ["ec2:CreateNetworkInterfacePermission"]
   }
 
   statement {
-    sid    = "LaunchTemplates"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
+    sid      = "LaunchTemplates"
+    effect   = "Allow"
+    resources = ["*"]
     actions = [
       "ec2:DeleteLaunchTemplate",
       "ec2:CreateLaunchTemplate",
@@ -109,11 +89,9 @@ data "aws_iam_policy_document" "codebuild_deployment_operation_document" {
   }
 
   statement {
-    sid    = "DeploymentVPCAccess"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
+    sid      = "DeploymentVPCAccess"
+    effect   = "Allow"
+    resources = ["*"]
     actions = [
       "ec2:CreateNetworkInterface",
       "ec2:DescribeDhcpOptions",
@@ -126,22 +104,16 @@ data "aws_iam_policy_document" "codebuild_deployment_operation_document" {
   }
 
   statement {
-    sid    = "DeploymentASGAccess"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
-    actions = [
-      "autoscaling:*"
-    ]
+    sid      = "DeploymentASGAccess"
+    effect   = "Allow"
+    resources = ["*"]
+    actions   = ["autoscaling:*"]
   }
 
   statement {
-    sid    = "DeploymentVolumeAccess"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
+    sid      = "DeploymentVolumeAccess"
+    effect   = "Allow"
+    resources = ["*"]
     actions = [
       "ec2:AttachVolume",
       "ec2:CreateVolume",
@@ -152,22 +124,16 @@ data "aws_iam_policy_document" "codebuild_deployment_operation_document" {
   }
 
   statement {
-    sid    = "DeploymentKeyPairAccess"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
-    actions = [
-      "ec2:DescribeKeyPairs"
-    ]
+    sid      = "DeploymentKeyPairAccess"
+    effect   = "Allow"
+    resources = ["*"]
+    actions   = ["ec2:DescribeKeyPairs"]
   }
 
   statement {
-    sid    = "DeploymentInstanceAccess"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
+    sid      = "DeploymentInstanceAccess"
+    effect   = "Allow"
+    resources = ["*"]
     actions = [
       "ec2:RunInstances",
       "ec2:StartInstances",
@@ -182,11 +148,9 @@ data "aws_iam_policy_document" "codebuild_deployment_operation_document" {
   }
 
   statement {
-    sid    = "DeploymentSnapshotAccess"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
+    sid      = "DeploymentSnapshotAccess"
+    effect   = "Allow"
+    resources = ["*"]
     actions = [
       "ec2:CreateSnapshot",
       "ec2:DescribeSnapshots"
@@ -194,11 +158,9 @@ data "aws_iam_policy_document" "codebuild_deployment_operation_document" {
   }
 
   statement {
-    sid    = "DeploymentAMIAccess"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
+    sid      = "DeploymentAMIAccess"
+    effect   = "Allow"
+    resources = ["*"]
     actions = [
       "ec2:RegisterImage",
       "ec2:DescribeImages"
@@ -206,11 +168,9 @@ data "aws_iam_policy_document" "codebuild_deployment_operation_document" {
   }
 
   statement {
-    sid    = "DeploymentSecurityGroupAccess"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
+    sid      = "DeploymentSecurityGroupAccess"
+    effect   = "Allow"
+    resources = ["*"]
     actions = [
       "ec2:CreateSecurityGroup",
       "ec2:DescribeSecurityGroups",
@@ -228,11 +188,9 @@ resource "aws_iam_role_policy" "codebuild_deployment_ecr" {
 
 data "aws_iam_policy_document" "codebuild_deployment_ecr_document" {
   statement {
-    sid    = "AllowReadECRAccess"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
+    sid       = "AllowReadECRAccess"
+    effect    = "Allow"
+    resources = ["*"]
     actions = [
       "ecr:BatchCheckLayerAvailability",
       "ecr:GetDownloadUrlForLayer",
@@ -245,17 +203,23 @@ data "aws_iam_policy_document" "codebuild_deployment_ecr_document" {
   }
 
   statement {
-    sid    = "AllowGetAuthTokenAccess"
-    effect = "Allow"
-    resources = [
-      "*"
-    ]
+    sid       = "AllowGetAuthTokenAccess"
+    effect    = "Allow"
+    resources = ["*"]
     actions = [
       "ecr:GetAuthorizationToken",
       "ecr-public:GetAuthorizationToken",
       "sts:GetServiceBearerToken"
     ]
   }
+}
+
+# ---------- KMS/SSM (핵심 수정) ----------
+# KMS ARN이 없으면 "" → compact가 제거 → [] (안전)
+locals {
+  codebuild_kms_resources = compact([
+    try(local.kms_outputs.aws_kms_key_apne2_deployment_common_arn, "")
+  ])
 }
 
 resource "aws_iam_role_policy" "codebuild_deployment_kms" {
@@ -265,29 +229,30 @@ resource "aws_iam_role_policy" "codebuild_deployment_kms" {
 }
 
 data "aws_iam_policy_document" "codebuild_deployment_kms_ssm_document" {
-  statement {
-    sid    = "AllowToDecryptKMSKey"
-    effect = "Allow"
-    resources = [
-      data.terraform_remote_state.kms.outputs.aws_kms_key_apne2_deployment_common_arn
-    ]
-    actions = [
-      "kms:Decrypt"
-    ]
+  # KMS: 리소스가 있을 때만 statement 생성 (0 또는 1개)
+  dynamic "statement" {
+    for_each = toset(local.codebuild_kms_resources)
+    iterator = kms
+    content {
+      sid       = "AllowToDecryptKMSKey"
+      effect    = "Allow"
+      actions   = ["kms:Decrypt"]
+      resources = [kms.value]
+    }
   }
 
+  # SSM: 항상 포함
   statement {
-    sid    = "AllowSsmParameterAccess"
-    effect = "Allow"
+    sid     = "AllowSsmParameterAccess"
+    effect  = "Allow"
+    actions = ["ssm:GetParameter", "ssm:GetParameters"]
     resources = [
-      "arn:aws:ssm:ap-northeast-2:${var.account_id.id}:parameter/CodeBuild/*",
-    ]
-    actions = [
-      "ssm:GetParameter",
-      "ssm:GetParameters"
+      "arn:aws:ssm:ap-northeast-2:${var.account_id.id}:parameter/CodeBuild/*"
     ]
   }
 }
+
+# ---------- KMS/SSM (끝) ----------
 
 resource "aws_iam_role_policy" "codebuild_deployment_cloudwatch" {
   name   = "codebuild-deployment-cloudwatch"
@@ -297,8 +262,8 @@ resource "aws_iam_role_policy" "codebuild_deployment_cloudwatch" {
 
 data "aws_iam_policy_document" "codebuild_deployment_cloudwatch_document" {
   statement {
-    sid    = "AllowCloudWatchAccess"
-    effect = "Allow"
+    sid       = "AllowCloudWatchAccess"
+    effect    = "Allow"
     resources = [
       "arn:aws:logs:*:${var.account_id.id}:log-group:/aws/codebuild/*",
       "arn:aws:logs:*:${var.account_id.id}:log-group:/aws/codebuild/*:*",
