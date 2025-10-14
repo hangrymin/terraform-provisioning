@@ -2,50 +2,45 @@ resource "aws_iam_role" "app_demoapp" {
   name = "app-demoapp"
   path = "/"
   assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
+    Version = "2012-10-17"
+    Statement = [
       {
-        "Effect" : "Allow",
-        "Principal" : {
-          "Service" : "ec2.amazonaws.com"
-        },
-        "Action" : "sts:AssumeRole",
+        Effect = "Allow"
+        Principal = { Service = "ec2.amazonaws.com" }
+        Action = "sts:AssumeRole"
       }
     ]
   })
 }
 
+# 원격 state가 켜졌을 때만 안전하게 자원 목록 계산
+locals {
+  demoapp_kms_resources = var.enable_remote_state ? compact([try(local.kms_outputs.aws_kms_key_apne2_deployment_common_arn, "")]) : []
+  demoapp_sm_resources  = var.enable_remote_state ? compact([try(local.secretsmanager_outputs.aws_secretsmanager_demo_tmcdapne2_id, "")]) : []
+}
+
 resource "aws_iam_role_policy" "demoapp_operation" {
+  # 둘 다 비어 있으면 정책 자체를 만들지 않음 (빈 Statement/Resource 방지)
+  count = (length(local.demoapp_kms_resources) + length(local.demoapp_sm_resources)) > 0 ? 1 : 0
+
   name = "minimum-demoapp-operation-access"
   role = aws_iam_role.app_demoapp.id
 
-  # enable_remote_state 가 true 일 때만 각 statement 를 포함하도록 구성
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version   = "2012-10-17"
     Statement = concat(
-      # 1) KMS Decrypt (remote_state 켜졌을 때만)
-      var.enable_remote_state ? [
-        {
-          Sid    = "AllowToDecryptKMSKey"
-          Effect = "Allow"
-          Action = ["kms:Decrypt"]
-          Resource = compact([
-            try(local.kms_outputs.aws_kms_key_apne2_deployment_common_arn, "")
-          ])
-        }
-      ] : [],
-
-      # 2) Secrets Manager (remote_state 켜졌을 때만)
-      var.enable_remote_state ? [
-        {
-          Sid    = "AllowSecretsManagerAccess"
-          Effect = "Allow"
-          Action = ["secretsmanager:GetSecretValue"]
-          Resource = compact([
-            try(local.secretsmanager_outputs.aws_secretsmanager_demo_tmcdapne2_id, "")
-          ])
-        }
-      ] : []
+      length(local.demoapp_kms_resources) > 0 ? [{
+        Sid      = "AllowToDecryptKMSKey"
+        Effect   = "Allow"
+        Action   = ["kms:Decrypt"]
+        Resource = local.demoapp_kms_resources
+      }] : [],
+      length(local.demoapp_sm_resources) > 0 ? [{
+        Sid      = "AllowSecretsManagerAccess"
+        Effect   = "Allow"
+        Action   = ["secretsmanager:GetSecretValue"]
+        Resource = local.demoapp_sm_resources
+      }] : []
     )
   })
 }

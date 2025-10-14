@@ -199,13 +199,8 @@ data "aws_iam_policy_document" "jenkins_operation_document" {
       "elasticloadbalancing:DescribeTargetGroups",
       "elasticloadbalancing:DescribeRules",
       "elasticloadbalancing:DescribeTargetGroups",
-      "elasticloadbalancing:DescribeLoadBalancerAttributes",
-      "elasticloadbalancing:DescribeLoadBalancers",
-      "elasticloadbalancing:DescribeTags",
-      "elasticloadbalancing:DescribeInstanceHealth",
-      "elasticloadbalancing:DescribeTargetGroups",
-      "codebuild:*",
-      "elasticloadbalancing:RegisterTargets"
+      "elasticloadbalancing:RegisterTargets",
+      "codebuild:*"
     ]
   }
 
@@ -251,7 +246,6 @@ data "aws_iam_policy_document" "jenkins_ecr_document" {
       "ecr:InitiateLayerUpload",
       "ecr:UploadLayerPart",
       "ecr:CompleteLayerUpload",
-      "ecr:BatchCheckLayerAvailability",
       "ecr:DescribeRepositories",
       "ecr:GetRepositoryPolicy",
       "ecr:ListImages",
@@ -273,7 +267,6 @@ data "aws_iam_policy_document" "jenkins_ecr_document" {
       "ecr:InitiateLayerUpload",
       "ecr:UploadLayerPart",
       "ecr:CompleteLayerUpload",
-      "ecr:BatchCheckLayerAvailability",
       "ecr:DescribeRepositories",
       "ecr:GetRepositoryPolicy",
       "ecr:ListImages",
@@ -282,22 +275,20 @@ data "aws_iam_policy_document" "jenkins_ecr_document" {
   }
 }
 
-resource "aws_iam_role_policy" "jenkins_kms" {
-  name   = "jenkins-kms-decryption"
-  role   = aws_iam_role.jenkins.id
-  policy = data.aws_iam_policy_document.jenkins_kms_ssm_document.json
+# ⭐ KMS 리소스가 있을 때만 KMS Statement 포함되도록 처리
+locals {
+  jenkins_kms_resources = var.enable_remote_state ? compact([try(local.kms_outputs.aws_kms_key_apne2_deployment_common_arn, "")]) : []
 }
 
 data "aws_iam_policy_document" "jenkins_kms_ssm_document" {
-    statement {
-    sid    = "AllowToDecryptKMSKey"
-    effect = "Allow"
-    resources = compact([
-      try(local.kms_outputs.aws_kms_key_apne2_deployment_common_arn, "")
-    ])
-    actions = [
-      "kms:Decrypt"
-    ]
+  dynamic "statement" {
+    for_each = length(local.jenkins_kms_resources) > 0 ? [1] : []
+    content {
+      sid       = "AllowToDecryptKMSKey"
+      effect    = "Allow"
+      actions   = ["kms:Decrypt"]
+      resources = local.jenkins_kms_resources
+    }
   }
 
   statement {
@@ -311,6 +302,13 @@ data "aws_iam_policy_document" "jenkins_kms_ssm_document" {
       "ssm:GetParameters"
     ]
   }
+}
+
+resource "aws_iam_role_policy" "jenkins_kms" {
+  # KMS statement가 없어도 SSM statement만으로 유효한 정책이므로 count 조건 불필요
+  name   = "jenkins-kms-decryption"
+  role   = aws_iam_role.jenkins.id
+  policy = data.aws_iam_policy_document.jenkins_kms_ssm_document.json
 }
 
 resource "aws_iam_role_policy" "jenkins_cloudwatch" {
@@ -345,6 +343,7 @@ resource "aws_iam_role_policy_attachment" "jenkins_attach" {
   role       = aws_iam_role.jenkins.name
   policy_arn = aws_iam_policy.app_universal.arn
 }
+
 output "jenkins_instance_profile" {
   value = aws_iam_instance_profile.jenkins.arn
 }
