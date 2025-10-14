@@ -18,27 +18,35 @@ resource "aws_iam_role" "app_demoapp" {
 resource "aws_iam_role_policy" "demoapp_operation" {
   name = "minimum-demoapp-operation-access"
   role = aws_iam_role.app_demoapp.id
+
+  # enable_remote_state 가 true 일 때만 각 statement 를 포함하도록 구성
   policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Sid" : "AllowToDecryptKMSKey",
-        "Action" : [
-          "kms:Decrypt"
-        ],
-        "Resource" : [
-          data.terraform_remote_state.kms.outputs.aws_kms_key_apne2_deployment_common_arn
-        ],
-        "Effect" : "Allow"
-      },
-      {
-        "Effect" : "Allow",
-        "Action" : "secretsmanager:GetSecretValue",
-        "Resource" : [
-          data.terraform_remote_state.secretsmanager.outputs.aws_secretsmanager_demo_tmcdapne2_id
-        ]
-      }
-    ]
+    Version = "2012-10-17"
+    Statement = concat(
+      # 1) KMS Decrypt (remote_state 켜졌을 때만)
+      var.enable_remote_state ? [
+        {
+          Sid    = "AllowToDecryptKMSKey"
+          Effect = "Allow"
+          Action = ["kms:Decrypt"]
+          Resource = compact([
+            try(local.kms_outputs.aws_kms_key_apne2_deployment_common_arn, "")
+          ])
+        }
+      ] : [],
+
+      # 2) Secrets Manager (remote_state 켜졌을 때만)
+      var.enable_remote_state ? [
+        {
+          Sid    = "AllowSecretsManagerAccess"
+          Effect = "Allow"
+          Action = ["secretsmanager:GetSecretValue"]
+          Resource = compact([
+            try(local.secretsmanager_outputs.aws_secretsmanager_demo_tmcdapne2_id, "")
+          ])
+        }
+      ] : []
+    )
   })
 }
 
