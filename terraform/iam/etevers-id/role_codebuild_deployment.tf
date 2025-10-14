@@ -229,14 +229,15 @@ resource "aws_iam_role_policy" "codebuild_deployment_kms" {
 }
 
 data "aws_iam_policy_document" "codebuild_deployment_kms_ssm_document" {
-  # KMS: 리소스가 있을 때만 statement 1개 생성
+  # KMS: 리소스가 있을 때만 statement 생성 (0 또는 1개)
   dynamic "statement" {
-    for_each = slice(local.codebuild_kms_resources, 0, 1)
+    for_each = toset(local.codebuild_kms_resources)
+    iterator = kms
     content {
       sid       = "AllowToDecryptKMSKey"
       effect    = "Allow"
       actions   = ["kms:Decrypt"]
-      resources = local.codebuild_kms_resources
+      resources = [kms.value]
     }
   }
 
@@ -250,6 +251,7 @@ data "aws_iam_policy_document" "codebuild_deployment_kms_ssm_document" {
     ]
   }
 }
+
 # ---------- KMS/SSM (끝) ----------
 
 resource "aws_iam_role_policy" "codebuild_deployment_cloudwatch" {
