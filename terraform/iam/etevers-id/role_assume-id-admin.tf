@@ -2,7 +2,7 @@
 # zerone-id administrator
 #
 resource "aws_iam_role" "assume_id_admin" {
-  provider = aws.bootstrap
+  # provider = aws.bootstrap
   name                 = "assume-id-admin"
   path                 = "/"
   max_session_duration = "43200"
@@ -35,7 +35,7 @@ data "aws_iam_policy_document" "assume_id_admin_assume_role" {
 }
 
 resource "aws_iam_role_policy" "assume_id_admin_passrole" {
-  provider = aws.bootstrap
+  # provider = aws.bootstrap
   name     = "assume-id-admin-passrole"
   role     = aws_iam_role.assume_id_admin.id
   policy   = data.aws_iam_policy_document.assume_id_admin_pass_role.json
@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "assume_id_admin_pass_role" {
 
 # Admin 권한 부여
 resource "aws_iam_role_policy_attachment" "assume_id_admin" {
-  provider  = aws.bootstrap
+  # provider  = aws.bootstrap
   role       = aws_iam_role.assume_id_admin.id
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
