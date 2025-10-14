@@ -40,12 +40,12 @@ resource "aws_iam_role_policy" "demo_kms" {
 }
 
 data "aws_iam_policy_document" "demo_kms_ssm_document" {
-  statement {
+      statement {
     sid    = "AllowToDecryptKMSKey"
     effect = "Allow"
-    resources = [
-      data.terraform_remote_state.kms.outputs.aws_kms_key_apne2_deployment_common_arn
-    ]
+    resources = compact([
+      try(local.kms_outputs.aws_kms_key_apne2_deployment_common_arn, "")
+    ])
     actions = [
       "kms:Decrypt"
     ]
@@ -54,9 +54,9 @@ data "aws_iam_policy_document" "demo_kms_ssm_document" {
   statement {
     sid    = "AllowSecretsManagerAccess"
     effect = "Allow"
-    resources = [
-      data.terraform_remote_state.secretsmanager.outputs.aws_secretsmanager_demo_tmcdapne2_id
-    ]
+    resources = compact([
+      try(local.secretsmanager_outputs.aws_secretsmanager_demo_tmcdapne2_id, "")
+    ])
     actions = [
       "secretsmanager:GetSecretValue"
     ]

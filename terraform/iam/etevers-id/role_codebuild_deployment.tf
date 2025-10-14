@@ -265,12 +265,12 @@ resource "aws_iam_role_policy" "codebuild_deployment_kms" {
 }
 
 data "aws_iam_policy_document" "codebuild_deployment_kms_ssm_document" {
-  statement {
+    statement {
     sid    = "AllowToDecryptKMSKey"
     effect = "Allow"
-    resources = [
-      data.terraform_remote_state.kms.outputs.aws_kms_key_apne2_deployment_common_arn
-    ]
+    resources = compact([
+      try(local.kms_outputs.aws_kms_key_apne2_deployment_common_arn, "")
+    ])
     actions = [
       "kms:Decrypt"
     ]
